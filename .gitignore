@@ -25,6 +25,9 @@
 # Ignore Spring files.
 /spring/*.pid
 
+# Ignore uploaded test images.
+/public/uploads
+
 # Ignore uploaded files in development.
 /storage/*
 !/storage/.keep
