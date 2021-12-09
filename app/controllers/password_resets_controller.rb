@@ -1,7 +1,8 @@
 class PasswordResetsController < ApplicationController
-  before_action :get_user,   only: [:edit, :update]
-  before_action :valid_user, only: [:edit, :update]
-  before_action :check_expiration, only: [:edit, :update]
+  before_action :get_user,          only: [:edit, :update]
+  before_action :valid_user,        only: [:edit, :update] 
+  before_action :check_expiration,  only: [:edit, :update]
+
   def new
   end
 
@@ -25,7 +26,7 @@ class PasswordResetsController < ApplicationController
     if params[:user][:password].empty?
       @user.errors.add(:password, "can't be empty")
       render 'edit'
-    elsif @user.update_attributes(user_params)
+    elsif @user.update(user_params)
       log_in @user
       flash[:success] = "Password has been reset."
       redirect_to @user
@@ -46,11 +47,11 @@ class PasswordResetsController < ApplicationController
 
   # Confirms a valid user.
   def valid_user
-    unless (@user && @user.activated? &&
-            @user.authenticated?(:reset, params[:id]))
-      redirect_to root_url
+      unless (@user && @user.activated? &&
+              @user.authenticated?(:reset, params[:id]))
+        redirect_to root_url
+      end
     end
-  end
 
   # Checks expiration of reset token.
   def check_expiration
